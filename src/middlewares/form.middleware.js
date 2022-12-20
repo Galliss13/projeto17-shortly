@@ -8,11 +8,14 @@ export function signupSchemaValidation(req, res, next) {
         const errors = error.details.map((detail) => detail.message)
         return res.status(422).send(errors)
     }
+
+    const {password, confirmPassword} = user
+    if (password !== confirmPassword) return res.sendStatus(422)
     next()
 }
 
 export function loginSchemaValidation(req, res, next) {
-
+    
     next()
 }
 
@@ -26,7 +29,6 @@ export async function verifyEmailExistence(req, res, next) {
         console.log(err)
         return res.sendStatus(500)
     }
-
 }
 
 export async function verifyEmailCompatibility(req, res, next) {
