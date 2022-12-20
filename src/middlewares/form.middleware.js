@@ -17,13 +17,16 @@ export function loginSchemaValidation(req, res, next) {
 }
 
 export async function verifyEmailExistence(req, res, next) {
+    const {email} = req.body
     try {
-        
+        const emailUserExists = await connection.query("SELECT * FROM users WHERE email=$1",[email])
+        if (emailUserExists) return res.sendStatus(409)
+        next()
     } catch (err) {
-        
+        console.log(err)
+        return res.sendStatus(500)
     }
 
-    next()
 }
 
 export async function verifyEmailCompatibility(req, res, next) {
