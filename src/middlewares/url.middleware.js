@@ -12,14 +12,16 @@ export async function urlSchemaValidation(req, res, next) {
 }
 
 export async function verifyUrlExistenceById(req, res, next) {
+    const {id} = req.params
     try {
-        
+        const url = await connection.query('SELECT * FROM urls WHERE id=$1', [id])
+        if (!url) return res.sendStatus(404)
+        next()
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
     }
 
-    next()
 }
 
 export async function verifyShortenUrlExistenceByUrl(req, res, next) {
