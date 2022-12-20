@@ -1,3 +1,5 @@
+import connection from "../database/database";
+
 export async function postUrlShorten(req, res) {
     try {
         

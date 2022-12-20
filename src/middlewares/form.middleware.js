@@ -1,3 +1,5 @@
+import connection from "../database/database"
+
 export function signupSchemaValidation(req, res, next) {
 
     next()

@@ -1,3 +1,5 @@
+import connection from "../database/database";
+
 export async function postSignup(req, res) {
     try {
 
