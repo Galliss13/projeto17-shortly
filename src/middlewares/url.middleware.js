@@ -1,4 +1,4 @@
-import connection from "../database/database"
+import connection from "../database/database.js"
 
 export async function urlSchemaValidation(req, res, next) {
 

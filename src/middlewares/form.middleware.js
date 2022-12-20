@@ -1,5 +1,5 @@
-import connection from "../database/database"
-import { signupSchema } from "../schemas/formSchemas"
+import connection from "../database/database.js"
+import { signupSchema, signinSchema } from "../schemas/formSchemas.js"
 
 export function signupSchemaValidation(req, res, next) {
     const user = req.body
@@ -15,7 +15,12 @@ export function signupSchemaValidation(req, res, next) {
 }
 
 export function loginSchemaValidation(req, res, next) {
-    
+    const user = req.body
+    const {error} = signinSchema.validate(user, {abortEarly: false})
+    if (error) {
+        const errors = error.details.map((detail) => detail.message)
+        return res.status(422).send(errors)
+    }
     next()
 }
 
