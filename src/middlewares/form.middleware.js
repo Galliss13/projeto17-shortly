@@ -41,6 +41,7 @@ export async function verifyEmailCompatibility(req, res, next) {
     try {
         const emailUserExists = await connection.query("SELECT * FROM users WHERE email=$1",[email])
         if (!emailUserExists) return res.sendStatus(401)
+        res.locals.user = emailUserExists
         next()
     } catch (err) {
         console.log(err)
