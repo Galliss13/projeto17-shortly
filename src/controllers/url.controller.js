@@ -29,8 +29,10 @@ export async function getUrlById(req, res) {
     }}
 
 export async function getOpenShortUrl(req, res) {
+    const {url} = res.locals
     try {
-        
+        await connection.query('UPDATE urls SET visitCount = visitCount + 1 WHERE url=$1', [url])
+        res.redirect(url)
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
@@ -40,12 +42,19 @@ export async function getOpenShortUrl(req, res) {
 
 
 export async function deleteShortUrlById(req, res) {
+    const {user} = res.locals
+    const {id} = req.params
     try {
+        const url = await connection.query('SELECT * FROM urls WHERE id=$1', [id])
+        if (!url) return res.sendStatus(404)
+        if (user.id !== url.userId) return res.sendStatus(401)
+
+        await connection.query('DELETE FROM urls WHERE id=$1', [id])
+        return res.sendStatus(204)
         
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
-    }
-}
+    }}
 
 

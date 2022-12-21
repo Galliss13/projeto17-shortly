@@ -13,14 +13,16 @@ export async function urlSchemaValidation(req, res, next) {
 
 
 export async function verifyShortenUrlExistenceByUrl(req, res, next) {
+    const {shortUrl} = req.params
     try {
-        
+        const {url} = await connection.query('SELECT * FROM urls  WHERE shortUrl=$1', [shortUrl])
+        if (!url || !shortUrl) return res.sendStatus(404)
+        res.locals.url = url
+        next()
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
     }
-
-    next()
 }
 
 export async function verifyUrlOwner (req, res, next) {
