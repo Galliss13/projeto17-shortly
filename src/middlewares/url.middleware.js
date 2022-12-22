@@ -25,14 +25,4 @@ export async function verifyShortenUrlExistenceByUrl(req, res, next) {
     }
 }
 
-export async function verifyUrlOwner (req, res, next) {
-    try {
-        
-    } catch (err) {
-        console.log(err)
-        res.sendStatus(500)
-    }
-
-    next()
-}
 

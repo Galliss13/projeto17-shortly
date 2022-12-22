@@ -1,7 +1,7 @@
 import { Router } from "express";
 
 import { postUrlShorten, getUrlById, getOpenShortUrl, deleteShortUrlById } from "../controllers/url.controller.js";
-import { urlSchemaValidation, verifyShortenUrlExistenceByUrl, verifyUrlOwner } from "../middlewares/url.middleware.js";
+import { urlSchemaValidation, verifyShortenUrlExistenceByUrl } from "../middlewares/url.middleware.js";
 import tokenAuthentication from "../middlewares/tokenAuthentication.middleware.js"
 
 
