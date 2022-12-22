@@ -29,9 +29,10 @@ export async function getUrlById(req, res) {
     }}
 
 export async function getOpenShortUrl(req, res) {
-    const {url} = res.locals
+    const {url, userId} = res.locals.urlObject
     try {
-        await connection.query('UPDATE urls SET visitCount = visitCount + 1 WHERE url=$1', [url])
+        await connection.query('UPDATE urls SET "visitCount" = "visitCount" + 1 WHERE url=$1', [url])
+        await connection.query('UPDATE users SET "linksCount" = "linksCount" + 1 WHERE "userId"=$1', [userId])
         res.redirect(url)
     } catch (err) {
         console.log(err)
