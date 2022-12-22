@@ -7,3 +7,5 @@ const router = Router()
 
 router.post('/signup', signupSchemaValidation, verifyEmailExistence, postSignup)
 router.post('signin', loginSchemaValidation, verifyEmailCompatibility, postLogin)
+
+export default router

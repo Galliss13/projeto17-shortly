@@ -11,3 +11,5 @@ router.post('/urls/shorten', tokenAuthentication, urlSchemaValidation, postUrlSh
 router.get('/urls/:id', getUrlById)
 router.get('/urls/open/:shortUrl',verifyShortenUrlExistenceByUrl, getOpenShortUrl)
 router.delete('/urls/:id', tokenAuthentication, deleteShortUrlById)
+
+export default router

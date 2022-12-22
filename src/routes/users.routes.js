@@ -7,3 +7,5 @@ const router = Router()
 
 router.get('/users/me', tokenAuthentication, getUserUrls)
 router.get('/ranking',getUsersUrlsRanking)
+
+export default router
