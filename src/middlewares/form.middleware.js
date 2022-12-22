@@ -28,7 +28,7 @@ export async function verifyEmailExistence(req, res, next) {
     const {email} = req.body
     try {
         const emailUserExists = await connection.query("SELECT * FROM users WHERE email=$1",[email])
-        if (emailUserExists) return res.sendStatus(409)
+        if (emailUserExists.rows[0]) return res.sendStatus(409)
         next()
     } catch (err) {
         console.log(err)
