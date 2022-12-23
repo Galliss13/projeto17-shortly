@@ -6,7 +6,7 @@ export async function postUrlShorten(req, res) {
     const {url} = req.body 
     const shortUrl = nanoid(5)
     try {
-        await connection.query('INSERT INTO urls ("userId", url, "shortUrl", "visitCount") VALUES ($1, $2, $3, 0)', 
+        await connection.query('INSERT INTO urls ("userId", url, "shortUrl") VALUES ($1, $2, $3)', 
         [user.id, url, shortUrl])
         await connection.query('UPDATE users SET "linksCount" = "linksCount" + 1 WHERE id=$1', [user.id])
         return res.sendStatus(201)
