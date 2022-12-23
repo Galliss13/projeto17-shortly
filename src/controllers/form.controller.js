@@ -7,6 +7,7 @@ export async function postSignup(req, res) {
     const passwordHash =  bcrypt.hashSync(password, 10)
     try {
         await connection.query('INSERT INTO users (name, email, password, "linksCount") VALUES ($1, $2, $3, 0)', [name, email, passwordHash])
+
         res.sendStatus(201)
     }catch(err) {
         console.log(err)

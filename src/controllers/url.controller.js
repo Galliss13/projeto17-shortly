@@ -26,6 +26,7 @@ export async function getUrlById(req, res) {
         if (!url.rows[0]) return res.sendStatus(404)
         delete url.rows[0].userId
         delete url.rows[0].visitCount
+        delete url.rows[0].createdAt
         res.status(200).send(url.rows[0])
     } catch (err) {
         console.log(err)
@@ -51,7 +52,7 @@ export async function deleteShortUrlById(req, res) {
         const url = await connection.query('SELECT * FROM urls WHERE id=$1', [id])
         if (!url.rows[0]) return res.sendStatus(404)
         if (user.id !== url.rows[0].userId) return res.sendStatus(401)
-
+        await connection.query('DELETE FROM visits WHERE "urlId"=$1', [id])
         await connection.query('DELETE FROM urls WHERE id=$1', [id])
         await connection.query('UPDATE users SET "linksCount" = "linksCount" - 1 WHERE id=$1', [user.id])
         return res.sendStatus(204)
