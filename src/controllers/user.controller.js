@@ -23,7 +23,7 @@ export async function getUserUrls(req, res) {
 export async function getUsersUrlsRanking(req, res) {
     try {
         const ranking = await connection.query('SELECT users.id, users.name, users."linksCount", COUNT(visits."userId") AS "visitCount" FROM users JOIN visits ON users.id=visits."userId" GROUP BY users.id ORDER BY "visitCount" DESC LIMIT 10;')
-        res.status(200).send(ranking)
+        res.status(200).send(ranking.rows)
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
