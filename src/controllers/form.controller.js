@@ -15,16 +15,17 @@ export async function postSignup(req, res) {
 }
 
 export async function postLogin(req, res) {
-    const {email, password} = req.body
-    const {user} = res.locals
-
-    const isValidPassword = bcrypt.compare(password, user.password)
-    if (!isValidPassword) return res.sendStatus(401)
-
-    const token = uuidV4()
+    const {password} = req.body
+    const {user} = res.locals    
     try {
+        const isValidPassword = await bcrypt.compare(password, user.password)
+        if (!isValidPassword) return res.sendStatus(401)
+
+        const token = uuidV4()
+
         await connection.query('INSERT INTO sessions ("userId", token) VALUES ($1, $2)', [user.id, token])
-        res.status(200).send(token)
+
+        return res.status(200).send(token)
     }catch(err) {
         console.log(err)
         res.sendStatus(500)

@@ -40,13 +40,11 @@ export async function verifyEmailCompatibility(req, res, next) {
     const {email} = req.body
     try {
         const emailUserExists = await connection.query("SELECT * FROM users WHERE email=$1",[email])
-        if (!emailUserExists) return res.sendStatus(401)
-        res.locals.user = emailUserExists
+        if (!emailUserExists.rows[0]) return res.sendStatus(401)
+        res.locals.user = emailUserExists.rows[0]
         next()
     } catch (err) {
         console.log(err)
         return res.sendStatus(500)
     }
-
-    next()
 }

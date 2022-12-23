@@ -6,6 +6,6 @@ import { postSignup, postLogin } from "../controllers/form.controller.js";
 const router = Router()
 
 router.post('/signup', signupSchemaValidation, verifyEmailExistence, postSignup)
-router.post('signin', loginSchemaValidation, verifyEmailCompatibility, postLogin)
+router.post('/signin', loginSchemaValidation, verifyEmailCompatibility, postLogin)
 
 export default router
