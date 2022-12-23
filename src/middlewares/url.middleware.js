@@ -15,9 +15,9 @@ export async function urlSchemaValidation(req, res, next) {
 export async function verifyShortenUrlExistenceByUrl(req, res, next) {
     const {shortUrl} = req.params
     try {
-        const urlObject = await connection.query('SELECT * FROM urls  WHERE shortUrl=$1', [shortUrl])
-        if (!urlObject.url || !shortUrl) return res.sendStatus(404)
-        res.locals.urlObject = urlObject
+        const urlObject = await connection.query('SELECT * FROM urls WHERE "shortUrl"=$1', [shortUrl])
+        if (!urlObject.rows[0] || !shortUrl) return res.sendStatus(404)
+        res.locals.urlObject = urlObject.rows[0]
         next()
     } catch (err) {
         console.log(err)

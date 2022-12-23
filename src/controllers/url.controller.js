@@ -27,12 +27,13 @@ export async function getUrlById(req, res) {
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
-    }}
+    }
+}
 
 export async function getOpenShortUrl(req, res) {
-    const {url, userId} = res.locals.urlObject
+    const {id, userId, url} = res.locals.urlObject
     try {
-        await connection.query('UPDATE urls SET "visitCount" = "visitCount" + 1 WHERE url=$1', [url])
+        await connection.query('INSERT INTO visits ("userId", "urlId") VALUES ($1, $2)', [userId, id])
         res.redirect(url)
     } catch (err) {
         console.log(err)
@@ -41,14 +42,13 @@ export async function getOpenShortUrl(req, res) {
 }
 
 
-
 export async function deleteShortUrlById(req, res) {
     const {user} = res.locals
     const {id} = req.params
     try {
         const url = await connection.query('SELECT * FROM urls WHERE id=$1', [id])
-        if (!url) return res.sendStatus(404)
-        if (user.id !== url.userId) return res.sendStatus(401)
+        if (!url.rows[0]) return res.sendStatus(404)
+        if (user.id !== url.rows[0].userId) return res.sendStatus(401)
 
         await connection.query('DELETE FROM urls WHERE id=$1', [id])
         await connection.query('UPDATE users SET "linksCount" = "linksCount" - 1 WHERE id=$1', [user.id])
