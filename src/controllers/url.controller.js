@@ -9,6 +9,9 @@ export async function postUrlShorten(req, res) {
         await connection.query('INSERT INTO urls ("userId", url, "shortUrl") VALUES ($1, $2, $3)', 
         [user.id, url, shortUrl])
         await connection.query('UPDATE users SET "linksCount" = "linksCount" + 1 WHERE id=$1', [user.id])
+
+        const createdUrl = await connection.query('SELECT * FROM urls WHERE url=$1', [url])
+        await connection.query('INSERT INTO visits ("userId", "urlId") VALUES ($1, $2)', [user.id, createdUrl.rows[0].id])
         return res.sendStatus(201)
     } catch (err) {
         console.log(err)
@@ -41,7 +44,6 @@ export async function getOpenShortUrl(req, res) {
     }
 }
 
-
 export async function deleteShortUrlById(req, res) {
     const {user} = res.locals
     const {id} = req.params
@@ -57,6 +59,7 @@ export async function deleteShortUrlById(req, res) {
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
-    }}
+    }
+}
 
 
