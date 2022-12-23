@@ -20,10 +20,10 @@ export async function getUrlById(req, res) {
     const {id} = req.params
     try {
         const url = await connection.query('SELECT * FROM urls WHERE id=$1', [id])
-        if (!url) return res.sendStatus(404)
-        delete url.userId
-        delete url.visitCount
-        res.status(200).send(url)
+        if (!url.rows[0]) return res.sendStatus(404)
+        delete url.rows[0].userId
+        delete url.rows[0].visitCount
+        res.status(200).send(url.rows[0])
     } catch (err) {
         console.log(err)
         res.sendStatus(500)
